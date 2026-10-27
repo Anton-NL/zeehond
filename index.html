@@ -5,20 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#dff5f2">
   <title>Zeehondje van de dag 🦭</title>
-  .close-video {
-  position: fixed;
-  top: 16px;
-  right: 16px;
-  z-index: 10001;
-  width: 44px;
-  height: 44px;
-  border: 0;
-  border-radius: 50%;
-  background: #ffffffdd;
-  color: #222;
-  font-size: 24px;
-  cursor: pointer;
-}
+  
   <style>
     :root { color-scheme: light; --ink:#173b43; --sea:#dff5f2; --blue:#83d5d0; --coral:#ffb6a2; }
     * { box-sizing: border-box; }
@@ -44,17 +31,11 @@
     .button-label { margin:24px 0 8px; font-size:1.15rem; font-weight:800; }
     .hint { margin:0 0 26px; color:#42656a; font-size:.94rem; }
     <button class="close-video" id="closeVideo" aria-label="Video sluiten">✕</button>
- .video-card {
+
+.video-card {
   display: none;
-  text-align: center;
-  margin: 24px auto 0;
-  padding: 14px;
-  background: #ffffffd9;
-  border: 1px solid #fff;
-  border-radius: 24px;
-  box-shadow: 0 12px 35px #1d68751a;
-  max-width: 420px;
 }
+
 .video-card.visible {
   display: flex;
   position: fixed;
@@ -62,7 +43,6 @@
   z-index: 9999;
   width: 100%;
   height: 100%;
-  max-width: none;
   margin: 0;
   padding: 0;
   border: 0;
@@ -70,22 +50,44 @@
   background: #000;
   align-items: center;
   justify-content: center;
-  box-shadow: none;
 }
-    @keyframes pop { from { opacity:0; transform:translateY(8px) scale(.98); } to { opacity:1; transform:translateY(0) scale(1); } }
-    .video-title { font-size:1.15rem; font-weight:800; padding:4px 5px 12px; }
+
+.video-title,
+.another {
+  display: none;
+}
+
 .shorts-player {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
-  max-width: none;
-  aspect-ratio: auto;
-  border-radius: 0;
   background: #000;
 }
+
 .shorts-player iframe {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
+  border: 0;
 }
+
+.close-video {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 10001;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: #ffffffdd;
+  color: #222;
+  font-size: 24px;
+  cursor: pointer;
+}
+
     .another { display:block; margin:16px auto 2px; padding:12px 18px; border:0; border-radius:999px; background:var(--coral); color:#542d29; font-weight:800; font-size:1rem; cursor:pointer; }
     .another:hover { filter:brightness(.97); transform:translateY(-1px); }
     footer { margin-top:28px; font-size:.8rem; color:#557579; }
@@ -104,11 +106,14 @@
     <p class="button-label">👇 Klik op mijn hoofd!</p>
     <p class="hint">Elke klik = een nieuw zeehondfilmpje.</p>
 
-    <section class="video-card" id="videoCard" aria-live="polite">
-      <div class="video-title" id="videoTitle">Jouw zeehondfilmpje 🫧</div>
-      <div class="player" id="player"></div>
-      <button class="another" id="anotherButton">Nog een zeehond! 🦭</button>
-    </section>
+
+<section class="video-card" id="videoCard" aria-live="polite">
+  <button class="close-video" id="closeVideo" aria-label="Video sluiten">✕</button>
+  <div class="video-title" id="videoTitle">Jouw zeehondfilmpje 🫧</div>
+  <div class="shorts-player" id="player"></div>
+  <button class="another" id="anotherButton">Nog een zeehond! 🦭</button>
+</section>
+
     <footer>Gemaakt met liefde voor zeehonden. Video’s worden afgespeeld via YouTube.</footer>
   </main>
 
