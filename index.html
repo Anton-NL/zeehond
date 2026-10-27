@@ -30,7 +30,6 @@
     .seal-button img { width:100%; height:100%; object-fit:cover; object-position:center 38%; }
     .button-label { margin:24px 0 8px; font-size:1.15rem; font-weight:800; }
     .hint { margin:0 0 26px; color:#42656a; font-size:.94rem; }
-    <button class="close-video" id="closeVideo" aria-label="Video sluiten">✕</button>
 
 .video-card {
   display: none;
@@ -178,11 +177,6 @@
     player.replaceChildren(iframe);
     card.classList.add("visible");
 
-    card.scrollIntoView({
-      behavior: "smooth",
-      block: "nearest"
-    });
-  }
 
   document
     .getElementById("sealButton")
