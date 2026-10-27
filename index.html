@@ -29,12 +29,40 @@
     .seal-button img { width:100%; height:100%; object-fit:cover; object-position:center 38%; }
     .button-label { margin:24px 0 8px; font-size:1.15rem; font-weight:800; }
     .hint { margin:0 0 26px; color:#42656a; font-size:.94rem; }
-    .video-card { display:none; text-align:left; margin:24px auto 0; padding:14px; background:#ffffffd9; border:1px solid #ffffff; border-radius:24px; box-shadow:0 12px 35px #1d68751a; }
-    .video-card.visible { display:block; animation:pop .25s ease-out; }
+ .video-card {
+  display: none;
+  text-align: center;
+  margin: 24px auto 0;
+  padding: 14px;
+  background: #ffffffd9;
+  border: 1px solid #fff;
+  border-radius: 24px;
+  box-shadow: 0 12px 35px #1d68751a;
+  max-width: 420px;
+}
+   .video-card.visible {
+  display: block;
+  animation: pop .25s ease-out;
+}
     @keyframes pop { from { opacity:0; transform:translateY(8px) scale(.98); } to { opacity:1; transform:translateY(0) scale(1); } }
     .video-title { font-size:1.15rem; font-weight:800; padding:4px 5px 12px; }
-    .player { position:relative; width:100%; aspect-ratio:16/9; overflow:hidden; border-radius:15px; background:#173b43; }
-    iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
+  .shorts-player {
+  position: relative;
+  width: 100%;
+  max-width: 315px;
+  aspect-ratio: 9 / 16;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 18px;
+  background: #173b43;
+}
+  .shorts-player iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  position: absolute;
+  inset: 0;
+}
     .another { display:block; margin:16px auto 2px; padding:12px 18px; border:0; border-radius:999px; background:var(--coral); color:#542d29; font-weight:800; font-size:1rem; cursor:pointer; }
     .another:hover { filter:brightness(.97); transform:translateY(-1px); }
     footer { margin-top:28px; font-size:.8rem; color:#557579; }
@@ -61,41 +89,81 @@
     <footer>Gemaakt met liefde voor zeehonden. Video’s worden afgespeeld via YouTube.</footer>
   </main>
 
-  <script>
-    // Voeg hier gerust extra YouTube-video-ID's en titels toe.
-    const videos = [
-      { id: "1kRVlttSROI", title: "Harbor seals: superkrachtig schattig" },
-      { id: "ovVSB7isRVo", title: "Een nieuwsgierige zeehond onder water" },
-      { id: "G2MJ1HnuMIA", title: "Teeny Tiny Tough Seal!" }
-    ];
 
-    let previousIndex = -1;
-    const card = document.getElementById("videoCard");
-    const player = document.getElementById("player");
-    const title = document.getElementById("videoTitle");
-
-    function showRandomSeal() {
-      let index;
-      do { index = Math.floor(Math.random() * videos.length); }
-      while (videos.length > 1 && index === previousIndex);
-      previousIndex = index;
-      const video = videos[index];
-
-      title.textContent = video.title + " 🦭";
-      player.replaceChildren();
-      const iframe = document.createElement("iframe");
-      iframe.src = "https://www.youtube-nocookie.com/embed/" + video.id + "?autoplay=1&rel=0";
-      iframe.title = video.title;
-      iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
-      iframe.allowFullscreen = true;
-      iframe.referrerPolicy = "strict-origin-when-cross-origin";
-      player.appendChild(iframe);
-      card.classList.add("visible");
-      card.scrollIntoView({ behavior: "smooth", block: "nearest" });
+<script>
+  // Voeg hier extra YouTube Shorts toe.
+  // Gebruik de video-ID uit de YouTube-link.
+  const videos = [
+    {
+      id: "Ge8Bbh7uHVY",
+      title: "Teeny Tiny Baby Seal"
+    },
+    {
+      id: "xR0wRR9s62Y",
+      title: "Curious Harbor Seal"
+    },
+    {
+      id: "1kRVlttSROI",
+      title: "Harbor Seals"
+    },
+    {
+      id: "ovVSB7isRVo",
+      title: "Onderwater zeehond"
     }
+  ];
 
-    document.getElementById("sealButton").addEventListener("click", showRandomSeal);
-    document.getElementById("anotherButton").addEventListener("click", showRandomSeal);
-  </script>
+  let previousIndex = -1;
+
+  const card = document.getElementById("videoCard");
+  const player = document.getElementById("player");
+  const title = document.getElementById("videoTitle");
+
+  function showRandomSeal() {
+    let index;
+
+    do {
+      index = Math.floor(Math.random() * videos.length);
+    } while (
+      videos.length > 1 && index === previousIndex
+    );
+
+    previousIndex = index;
+    const video = videos[index];
+
+    title.textContent = video.title + " 🦭";
+
+    const iframe = document.createElement("iframe");
+
+    iframe.src =
+      "https://www.youtube-nocookie.com/embed/" +
+      video.id +
+      "?autoplay=1&rel=0";
+
+    iframe.title = video.title;
+    iframe.allow =
+      "accelerometer; autoplay; encrypted-media; " +
+      "gyroscope; picture-in-picture; web-share";
+
+    iframe.allowFullscreen = true;
+    iframe.referrerPolicy = "strict-origin-when-cross-origin";
+
+    player.replaceChildren(iframe);
+    card.classList.add("visible");
+
+    card.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest"
+    });
+  }
+
+  document
+    .getElementById("sealButton")
+    .addEventListener("click", showRandomSeal);
+
+  document
+    .getElementById("anotherButton")
+    .addEventListener("click", showRandomSeal);
+</script>
+
 </body>
 </html>
