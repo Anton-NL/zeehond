@@ -162,15 +162,15 @@
     return "desktop";
   }
 
-  const deviceType = getDeviceType();
+const deviceType = getDeviceType();
 
-  async function trackEvent(eventType, videoId = null) {
-    if (
-      !sb_publishable_SFamWrcarFcRO_92pz6BBg_-27LbBj_.startsWith("sb_publishable_")
-    ) {
-      console.warn("Vul eerst je Supabase publishable key in.");
-      return;
-    }
+async function trackEvent(eventType, videoId = null) {
+  if (
+    !SUPABASE_PUBLISHABLE_KEY.startsWith("sb_publishable_")
+  ) {
+    console.warn("Vul eerst je Supabase publishable key in.");
+    return;
+  }
 
     try {
       const response = await fetch(
