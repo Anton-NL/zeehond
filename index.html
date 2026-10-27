@@ -5,6 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#dff5f2">
   <title>Zeehondje van de dag 🦭</title>
+  .close-video {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 10001;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: #ffffffdd;
+  color: #222;
+  font-size: 24px;
+  cursor: pointer;
+}
   <style>
     :root { color-scheme: light; --ink:#173b43; --sea:#dff5f2; --blue:#83d5d0; --coral:#ffb6a2; }
     * { box-sizing: border-box; }
@@ -29,6 +43,7 @@
     .seal-button img { width:100%; height:100%; object-fit:cover; object-position:center 38%; }
     .button-label { margin:24px 0 8px; font-size:1.15rem; font-weight:800; }
     .hint { margin:0 0 26px; color:#42656a; font-size:.94rem; }
+    <button class="close-video" id="closeVideo" aria-label="Video sluiten">✕</button>
  .video-card {
   display: none;
   text-align: center;
@@ -40,28 +55,36 @@
   box-shadow: 0 12px 35px #1d68751a;
   max-width: 420px;
 }
-   .video-card.visible {
-  display: block;
-  animation: pop .25s ease-out;
+.video-card.visible {
+  display: flex;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: #000;
+  align-items: center;
+  justify-content: center;
+  box-shadow: none;
 }
     @keyframes pop { from { opacity:0; transform:translateY(8px) scale(.98); } to { opacity:1; transform:translateY(0) scale(1); } }
     .video-title { font-size:1.15rem; font-weight:800; padding:4px 5px 12px; }
-  .shorts-player {
-  position: relative;
-  width: 100%;
-  max-width: 315px;
-  aspect-ratio: 9 / 16;
-  margin: 0 auto;
-  overflow: hidden;
-  border-radius: 18px;
-  background: #173b43;
-}
-  .shorts-player iframe {
+.shorts-player {
   width: 100%;
   height: 100%;
-  border: 0;
-  position: absolute;
-  inset: 0;
+  max-width: none;
+  aspect-ratio: auto;
+  border-radius: 0;
+  background: #000;
+}
+.shorts-player iframe {
+  width: 100%;
+  height: 100%;
 }
     .another { display:block; margin:16px auto 2px; padding:12px 18px; border:0; border-radius:999px; background:var(--coral); color:#542d29; font-weight:800; font-size:1rem; cursor:pointer; }
     .another:hover { filter:brightness(.97); transform:translateY(-1px); }
@@ -159,7 +182,10 @@
   document
     .getElementById("sealButton")
     .addEventListener("click", showRandomSeal);
-
+document.getElementById("closeVideo").addEventListener("click", () => {
+  document.getElementById("videoCard").classList.remove("visible");
+  document.getElementById("player").replaceChildren();
+});
   document
     .getElementById("anotherButton")
     .addEventListener("click", showRandomSeal);
