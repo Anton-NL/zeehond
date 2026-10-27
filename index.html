@@ -117,50 +117,31 @@
   </main>
 
 
+
 <script>
-  // Voeg hier extra YouTube Shorts toe.
-  // Gebruik de video-ID uit de YouTube-link.
   const videos = [
-    {
-      id: "Xa-8suehHSY",
-      title: "Im so in love with you"
-    },
-    {
-      id: "4yfFy8HF8WE",
-      title: "Kusjesss"
-    },
-    {
-      id: "1kRVlttSROI",
-      title: "Harbor Seals"
-    },
-    {
-      id: "ovVSB7isRVo",
-      title: "Onderwater zeehond"
-    }
+    { id: "Xa-8suehHSY", title: "Im so in love with you" },
+    { id: "4yfFy8HF8WE", title: "Kusjesss" },
+    { id: "1kRVlttSROI", title: "Harbor Seals" },
+    { id: "ovVSB7isRVo", title: "Onderwater zeehond" }
   ];
 
   let previousIndex = -1;
 
   const card = document.getElementById("videoCard");
   const player = document.getElementById("player");
-  const title = document.getElementById("videoTitle");
 
   function showRandomSeal() {
     let index;
 
     do {
       index = Math.floor(Math.random() * videos.length);
-    } while (
-      videos.length > 1 && index === previousIndex
-    );
+    } while (videos.length > 1 && index === previousIndex);
 
     previousIndex = index;
     const video = videos[index];
 
-    title.textContent = video.title + " 🦭";
-
     const iframe = document.createElement("iframe");
-
     iframe.src =
       "https://www.youtube-nocookie.com/embed/" +
       video.id +
@@ -170,25 +151,29 @@
     iframe.allow =
       "accelerometer; autoplay; encrypted-media; " +
       "gyroscope; picture-in-picture; web-share";
-
     iframe.allowFullscreen = true;
     iframe.referrerPolicy = "strict-origin-when-cross-origin";
 
     player.replaceChildren(iframe);
     card.classList.add("visible");
-
+  }
 
   document
     .getElementById("sealButton")
     .addEventListener("click", showRandomSeal);
-document.getElementById("closeVideo").addEventListener("click", () => {
-  document.getElementById("videoCard").classList.remove("visible");
-  document.getElementById("player").replaceChildren();
-});
+
+  document
+    .getElementById("closeVideo")
+    .addEventListener("click", () => {
+      card.classList.remove("visible");
+      player.replaceChildren();
+    });
+
   document
     .getElementById("anotherButton")
     .addEventListener("click", showRandomSeal);
 </script>
+
 
 </body>
 </html>
