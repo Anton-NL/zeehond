@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#dff5f2">
+  <title>Zeehondje van de dag 🦭</title>
+  <style>
+    :root { color-scheme: light; --ink:#173b43; --sea:#dff5f2; --blue:#83d5d0; --coral:#ffb6a2; }
+    * { box-sizing: border-box; }
+    body {
+      margin:0; min-height:100vh; display:grid; place-items:center; padding:28px 16px;
+      font-family: ui-rounded, "Trebuchet MS", system-ui, sans-serif; color:var(--ink);
+      background: radial-gradient(circle at 15% 15%, #fff9df 0 8%, transparent 30%),
+                  radial-gradient(circle at 85% 80%, #b8e9e6 0 10%, transparent 34%), var(--sea);
+    }
+    main { width:min(760px,100%); text-align:center; }
+    .tag { display:inline-block; padding:8px 14px; border-radius:999px; background:#ffffffb8; font-size:.9rem; }
+    h1 { font-size:clamp(2rem,6vw,3.6rem); line-height:1.05; margin:18px 0 10px; letter-spacing:-.04em; }
+    .intro { font-size:1.08rem; line-height:1.6; max-width:520px; margin:0 auto 24px; }
+    .seal-button {
+      border:0; padding:0; width:clamp(190px,45vw,280px); aspect-ratio:1; border-radius:50%;
+      cursor:pointer; position:relative; overflow:hidden; background:white;
+      box-shadow:0 12px 0 #9bd8d1, 0 20px 35px #1d687522;
+      outline:5px solid #fff; transition:transform .18s ease, box-shadow .18s ease;
+    }
+    .seal-button:hover { transform:translateY(-5px) rotate(-2deg); box-shadow:0 17px 0 #9bd8d1, 0 25px 35px #1d687522; }
+    .seal-button:active { transform:translateY(3px) scale(.98); box-shadow:0 7px 0 #9bd8d1, 0 12px 20px #1d687522; }
+    .seal-button img { width:100%; height:100%; object-fit:cover; object-position:center 38%; }
+    .button-label { margin:24px 0 8px; font-size:1.15rem; font-weight:800; }
+    .hint { margin:0 0 26px; color:#42656a; font-size:.94rem; }
+    .video-card { display:none; text-align:left; margin:24px auto 0; padding:14px; background:#ffffffd9; border:1px solid #ffffff; border-radius:24px; box-shadow:0 12px 35px #1d68751a; }
+    .video-card.visible { display:block; animation:pop .25s ease-out; }
+    @keyframes pop { from { opacity:0; transform:translateY(8px) scale(.98); } to { opacity:1; transform:translateY(0) scale(1); } }
+    .video-title { font-size:1.15rem; font-weight:800; padding:4px 5px 12px; }
+    .player { position:relative; width:100%; aspect-ratio:16/9; overflow:hidden; border-radius:15px; background:#173b43; }
+    iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
+    .another { display:block; margin:16px auto 2px; padding:12px 18px; border:0; border-radius:999px; background:var(--coral); color:#542d29; font-weight:800; font-size:1rem; cursor:pointer; }
+    .another:hover { filter:brightness(.97); transform:translateY(-1px); }
+    footer { margin-top:28px; font-size:.8rem; color:#557579; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation:none!important; transition:none!important; } }
+  </style>
+</head>
+<body>
+  <main>
+    <span class="tag">🦭 jouw dagelijkse dosis zeehond</span>
+    <h1>Zeehondje van de dag</h1>
+    <p class="intro">Even behoefte aan een zeehond? Klik op het hoofd hieronder en laat het internet je verrassen.</p>
+
+    <button class="seal-button" id="sealButton" aria-label="Toon een willekeurig zeehondfilmpje">
+      <img src="zeehond.jpg" alt="Close-up van een nieuwsgierige zeehond">
+    </button>
+    <p class="button-label">👇 Klik op mijn hoofd!</p>
+    <p class="hint">Elke klik = een nieuw zeehondfilmpje.</p>
+
+    <section class="video-card" id="videoCard" aria-live="polite">
+      <div class="video-title" id="videoTitle">Jouw zeehondfilmpje 🫧</div>
+      <div class="player" id="player"></div>
+      <button class="another" id="anotherButton">Nog een zeehond! 🦭</button>
+    </section>
+    <footer>Gemaakt met liefde voor zeehonden. Video’s worden afgespeeld via YouTube.</footer>
+  </main>
+
+  <script>
+    // Voeg hier gerust extra YouTube-video-ID's en titels toe.
+    const videos = [
+      { id: "1kRVlttSROI", title: "Harbor seals: superkrachtig schattig" },
+      { id: "ovVSB7isRVo", title: "Een nieuwsgierige zeehond onder water" },
+      { id: "G2MJ1HnuMIA", title: "Teeny Tiny Tough Seal!" }
+    ];
+
+    let previousIndex = -1;
+    const card = document.getElementById("videoCard");
+    const player = document.getElementById("player");
+    const title = document.getElementById("videoTitle");
+
+    function showRandomSeal() {
+      let index;
+      do { index = Math.floor(Math.random() * videos.length); }
+      while (videos.length > 1 && index === previousIndex);
+      previousIndex = index;
+      const video = videos[index];
+
+      title.textContent = video.title + " 🦭";
+      player.replaceChildren();
+      const iframe = document.createElement("iframe");
+      iframe.src = "https://www.youtube-nocookie.com/embed/" + video.id + "?autoplay=1&rel=0";
+      iframe.title = video.title;
+      iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+      iframe.allowFullscreen = true;
+      iframe.referrerPolicy = "strict-origin-when-cross-origin";
+      player.appendChild(iframe);
+      card.classList.add("visible");
+      card.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+
+    document.getElementById("sealButton").addEventListener("click", showRandomSeal);
+    document.getElementById("anotherButton").addEventListener("click", showRandomSeal);
+  </script>
+</body>
+</html>
