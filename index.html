@@ -121,6 +121,7 @@
 
 <script>
   const SUPABASE_URL = "https://mfbcphtsirtnktvtwxgt.supabase.co";
+const FUNCTION_NAME = "track-seal-event-";
   const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_SFamWrcarFcRO_92pz6BBg_-27LbBj_";
   
   const videos = [
@@ -173,23 +174,23 @@ async function trackEvent(eventType, videoId = null) {
   }
 
     try {
-      const response = await fetch(
-        SUPABASE_URL + "/functions/v1/track-seal-event",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "apikey": SUPABASE_PUBLISHABLE_KEY
-          },
-          body: JSON.stringify({
-            visitor_id: visitorId,
-            session_id: sessionId,
-            event_type: eventType,
-            video_id: videoId,
-            device_type: deviceType
-          })
-        }
-      );
+   const response = await fetch(
+  `${SUPABASE_URL}/functions/v1/${FUNCTION_NAME}`,
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "apikey": SUPABASE_PUBLISHABLE_KEY
+    },
+    body: JSON.stringify({
+      visitor_id: visitorId,
+      session_id: sessionId,
+      event_type: eventType,
+      video_id: videoId,
+      device_type: deviceType
+    })
+  }
+);
 
       if (!response.ok) {
         console.error(
