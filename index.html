@@ -118,13 +118,90 @@
 
 
 
+
 <script>
+  const SUPABASE_URL = "https://mfbcphtsirtnktvtwxgt.supabase.co";
+  const SUPABASE_PUBLISHABLE_KEY = "VUL_HIER_JE_SB_PUBLISHABLE_KEY_IN";
+
   const videos = [
     { id: "Xa-8suehHSY", title: "Im so in love with you" },
     { id: "4yfFy8HF8WE", title: "Kusjesss" },
     { id: "JazJHqyevRI", title: "Seal Core" },
     { id: "CkAywv7LQys", title: "Flipper" }
   ];
+
+  function makeId() {
+    if (crypto.randomUUID) {
+      return crypto.randomUUID().replaceAll("-", "_");
+    }
+    return "id_" + Date.now() + "_" +
+      Math.random().toString(36).slice(2) +
+      Math.random().toString(36).slice(2);
+  }
+
+  function getStoredId(storage, key) {
+    let id = storage.getItem(key);
+    if (!id) {
+      id = makeId();
+      storage.setItem(key, id);
+    }
+    return id;
+  }
+
+  const visitorId = getStoredId(
+    localStorage, "seal_visitor_id"
+  );
+  const sessionId = getStoredId(
+    sessionStorage, "seal_session_id"
+  );
+
+  function getDeviceType() {
+    const ua = navigator.userAgent;
+    if (/iPad|Tablet|PlayBook|Silk/i.test(ua)) return "tablet";
+    if (/Mobi|iPhone|Android/i.test(ua)) return "mobile";
+    return "desktop";
+  }
+
+  const deviceType = getDeviceType();
+
+  async function trackEvent(eventType, videoId = null) {
+    if (
+      !sb_publishable_SFamWrcarFcRO_92pz6BBg_-27LbBj_.startsWith("sb_publishable_")
+    ) {
+      console.warn("Vul eerst je Supabase publishable key in.");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        SUPABASE_URL + "/functions/v1/track-seal-event",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "apikey": SUPABASE_PUBLISHABLE_KEY
+          },
+          body: JSON.stringify({
+            visitor_id: visitorId,
+            session_id: sessionId,
+            event_type: eventType,
+            video_id: videoId,
+            device_type: deviceType
+          })
+        }
+      );
+
+      if (!response.ok) {
+        console.error(
+          "Supabase registratie mislukt:",
+          response.status,
+          await response.text()
+        );
+      }
+    } catch (error) {
+      console.error("Supabase niet bereikbaar:", error);
+    }
+  }
 
   let previousIndex = -1;
 
@@ -136,10 +213,15 @@
 
     do {
       index = Math.floor(Math.random() * videos.length);
-    } while (videos.length > 1 && index === previousIndex);
+    } while (
+      videos.length > 1 && index === previousIndex
+    );
 
     previousIndex = index;
     const video = videos[index];
+
+    // Registreer de klik en de gekozen video.
+    trackEvent("click", video.id);
 
     const iframe = document.createElement("iframe");
     iframe.src =
